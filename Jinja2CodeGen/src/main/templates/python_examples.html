@@ -1,0 +1,14 @@
+{% from "python_macros.html" import class,function %}
+
+{{ class('Person',
+		init_args={'name':'','age':''}
+		)
+}}
+
+{{ class('Doctor','Person',
+		init_args={'name':'"John"','age':'30','med_school':'"BYU"'},
+		parent_args={'name':'"John"','age':'30'}
+		)
+}}
+
+{{ function('say_hello',{'greeting':'"Hello"','name':'"You"'}) }}

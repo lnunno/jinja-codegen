@@ -1,0 +1,64 @@
+{% from 'util_macros.html' import include_if %} 
+
+{# Python code generation macros. #}
+
+{% macro dict_to_attributes(dictionary) %}
+	{% set acc = [] %}
+	{% for name,value in dictionary.iteritems() %}
+		{% if value %}
+			{% set s = '%s=%s'|format(name,value|string) %}
+		{% else %}
+			{% set s = name %}
+		{% endif %}
+		{% do acc.append(s) %}
+	{% endfor -%}
+	{{ acc|join(',') }}
+{%- endmacro %}
+
+{% macro constructor(args,super_call='',initialize=True,body='') %}
+	{% set acc = ['self'] %}
+	{% for name,value in args.iteritems() %}
+		{% if value %}
+			{% set s = '%s=%s'|format(name,value|string) %}
+		{% else %}
+			{% set s = name %}
+		{% endif %}
+		{% do acc.append(s) %}
+	{% endfor %}
+def __init__({{ acc|join(',') }}):
+		'''docs
+		'''
+	{% if acc|length == 1 and not super_call %}
+		pass
+	{% endif %}
+	{% if super_call %}
+		{{ super_call }} 
+	{% endif %}
+	{% if initialize -%}
+		{%- for a in args.keys() %}
+		self.{{ a }} = {{ a }}		
+		{% endfor %}
+	{% endif %}
+		{{ body }}
+{% endmacro %}
+
+{% macro class(name,parent='object',initialize=True,init_args={},parent_args={},init_body='') %}
+	{# parent_args should be a subset of init_args #}
+class {{ name }}({{ parent }}):
+	'''Classdocs
+	'''
+	
+	{% if parent == 'object' %}
+	{{ constructor(init_args,body=init_body) }}
+	{% else %}
+	{% set attr_string = dict_to_attributes(parent_args) -%} 
+	{% set super_call = 'super(%s,self).__init__(%s)'|format(name,attr_string) %}
+	{# remove parent_args from init_args #}
+	{{ constructor(init_args,super_call,initialize,body=init_body) }}
+	{% endif %}
+{% endmacro %}
+
+{% macro function(name,args,body='pass') -%}
+	def {{ name }}({{ dict_to_attributes(args) }} ):
+		{{ body }}
+{% endmacro %}
