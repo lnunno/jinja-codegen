@@ -2,7 +2,11 @@
 
 {# Java macros #}
 
-{% macro class(name,extends='',implements=[],visibility='public',has_main=False,body='') -%}
+{% macro class(name,
+				extends='',implements=[],
+				visibility='public',
+				has_main=False,body=''
+			  ) -%}
 	{% set extension = include_if('extends %s '|format(extends),extends) %}
 	{% set interfaces = implements|join(', ') %}
 	{% if implements|length > 0 %}
@@ -14,6 +18,30 @@
 } 
 {% endmacro %}
 
+{% macro constructor(class_name,args={},initialize=True) %}
+	{# 
+		args is a dict of type to name. Assumes public constructor.
+		initialize sets data members of the same name to the values in args. 
+	#}
+{% set acc = [] %}
+{% for type,name in args.iteritems() %}
+	{% do acc.append('%s %s'|format(type,name)) %}
+{% endfor %}
+{% if initialize %}
+{% for member in acc %}
+private {{ member }};
+{% endfor %}
+
+{% endif %}
+public {{ class_name }}({{ acc|join(', ') }}){
+	{% if initialize %}
+	{% for v in args.values() %}
+	this.{{ v }} = {{ v }}; 
+	{% endfor %}
+	{% endif %}
+}
+{% endmacro %}
+
 {% macro main(body='') -%}
 public static void main(String[] args) {
 	{{ body }}
@@ -22,7 +50,7 @@ public static void main(String[] args) {
 
 {% macro enum(name,items) -%}
 	public enum {{ name }} {
-		{{ items|join(',') }}
+		{{ items|join(',') }};
 	}
 {% endmacro %}
 

@@ -19,7 +19,7 @@ public static void main(String[] args) {
 
 
 public enum Days {
-		SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY
+		SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY;
 	}
 
 
@@ -41,3 +41,13 @@ switch(day) {
  
 }
  
+
+private int a;
+private HashMap<String,Bool> myMap;
+private String name;
+
+public NewClass(int a, HashMap<String,Bool> myMap, String name){
+	this.a = a; 
+	this.myMap = myMap; 
+	this.name = name; 
+}

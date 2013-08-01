@@ -9,3 +9,8 @@
 {{ jm.enum('Days',days) }}
 
 {{ jm.switch('day',days) }} 
+
+{{ jm.constructor('NewClass',
+					args={'int':'a','String':'name','HashMap<String,Bool>':'myMap'}
+				 ) 
+}}
