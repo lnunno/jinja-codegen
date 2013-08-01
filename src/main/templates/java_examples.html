@@ -1,3 +1,11 @@
 {% import 'java_macros.html' as jm %}
 
-{{ jm.main() }}
+{{ jm.class('TestClass') }}
+{{ jm.class('MacroOut',extends='ParentClass',implements=['Interface','AnotherInterface'],has_main=True) }}
+
+{{ jm.main('String s;') }}
+
+{% set days = [ 'SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY','THURSDAY', 'FRIDAY', 'SATURDAY' ] %}
+{{ jm.enum('Days',days) }}
+
+{{ jm.switch('day',days) }} 

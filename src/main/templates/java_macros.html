@@ -2,6 +2,18 @@
 
 {# Java macros #}
 
+{% macro class(name,extends='',implements=[],visibility='public',has_main=False,body='') -%}
+	{% set extension = include_if('extends %s '|format(extends),extends) %}
+	{% set interfaces = implements|join(', ') %}
+	{% if implements|length > 0 %}
+		{% set interfaces = 'implements ' + interfaces %}
+	{% endif %}
+{{ visibility }} class {{ name }} {{ extension }}{{ interfaces }}{
+	{{ body }}
+	{{ include_if(main(),has_main) }}
+} 
+{% endmacro %}
+
 {% macro main(body='') -%}
 public static void main(String[] args) {
 	{{ body }}
@@ -12,6 +24,19 @@ public static void main(String[] args) {
 	public enum {{ name }} {
 		{{ items|join(',') }}
 	}
+{% endmacro %}
+
+{% macro switch(item,conditions,default=False) %}
+switch({{ item }}) {
+	{% for c in conditions %}
+	case {{ c }}:
+		break;
+	{% endfor %}
+	{% if default %}
+	default:
+		break;
+	{% endif %} 
+}
 {% endmacro %}
 
 

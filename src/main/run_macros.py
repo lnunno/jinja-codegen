@@ -22,7 +22,6 @@ class JinjaProperties(object):
                                  extensions=['jinja2.ext.do'])        
         self.env = env        
 
-
 def run_macros():
     props = JinjaProperties()
     env = props.env
@@ -33,7 +32,7 @@ def run_macros():
     
     # Java code generation examples.
     java_template = env.get_template('java_examples.html')
-    save_rendered_template(java_template, {}, os.path.join(props.render_path,'macro_out.java'))
+    save_rendered_template(java_template, {}, os.path.join(props.render_path,'MacroOut.java'))
     
 def save_rendered_template(template,variables,outfile):
     with open(outfile,'w') as f:
