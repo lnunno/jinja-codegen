@@ -26,8 +26,14 @@ class JinjaProperties(object):
 def run_macros():
     props = JinjaProperties()
     env = props.env
-    template = env.get_template('python_examples.html')
-    save_rendered_template(template, {}, os.path.join(props.render_path,'macro_out.py'))
+    
+    # Python code generation examples.
+    python_template = env.get_template('python_examples.html')
+    save_rendered_template(python_template, {}, os.path.join(props.render_path,'macro_out.py'))
+    
+    # Java code generation examples.
+    java_template = env.get_template('java_examples.html')
+    save_rendered_template(java_template, {}, os.path.join(props.render_path,'macro_out.java'))
     
 def save_rendered_template(template,variables,outfile):
     with open(outfile,'w') as f:

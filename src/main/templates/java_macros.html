@@ -1,0 +1,17 @@
+{% from 'util_macros.html' import include_if %}
+
+{# Java macros #}
+
+{% macro main(body='') -%}
+public static void main(String[] args) {
+	{{ body }}
+}
+{% endmacro %}
+
+{% macro enum(name,items) -%}
+	public enum {{ name }} {
+		{{ items|join(',') }}
+	}
+{% endmacro %}
+
+
